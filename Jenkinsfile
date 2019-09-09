@@ -14,13 +14,11 @@ node('haimaxy-jnlp') {
     }
     stage('Build') {
         echo "3.Build Docker Image Stage"
-        sh "docker build -t cnych/jenkins-demo:${build_tag} ."
+        sh "docker build -t 192.168.234.121:5000/cnych/jenkins-demo:${build_tag} ."
     }
     stage('Push') {
         echo "4.Push Docker Image Stage"
         withCredentials([usernamePassword(credentialsId: 'dockerHub', passwordVariable: 'dockerHubPassword', usernameVariable: 'dockerHubUser')]) {
-            echo "${dockerHubUser}"
-            echo "${dockerHubPassword}"
             sh "docker login 192.168.234.121:5000 -u ${dockerHubUser} -p ${dockerHubPassword}"
             sh "docker push 192.168.234.121:5000/cnych/jenkins-demo:${build_tag}"
         }
